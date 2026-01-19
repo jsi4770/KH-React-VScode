@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Modal from "@/components/commons/Modal"; //@는 src 기준 (절대경로)
 import { useAuth } from "../../../context/AuthContext";
+import Input from "../../../components/commons/ui/Input";
+import styles from "./loginMoadal.module.css";
 
 
 
