@@ -1,3 +1,6 @@
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import styles from './RegisterPage.module.css';
 
 
 function RegisterPage() {
@@ -36,27 +39,249 @@ function RegisterPage() {
                 [name] : '',
             }))
         }
+    };
 
-        //아이디 중복 체크
-        const handleIdCheck = async () => {
-            const {userId} = formData;
+    //아이디 중복 체크
+    const handleIdCheck = async () => {
+        const {userId} = formData;
 
-            if(userId.length<5){
+        if(userId.length<5){
+            setIdCheckResult({
+                valid : false,
+                message : '아이디는 5글자 이상 입력하세요.'
+            });
+            return;
+        }
+        try{
+            const result = await authApi.checkIdDuplicate(userId);
+            if(result === 'NNNNY'){
+                setIdCheckResult({
+                    valid : true,
+                    message : '사용 가능한 아이디입니다.'
+                });
+            }else{
                 setIdCheckResult({
                     valid : false,
-                    message : '아이디는 5글자 이상 입력하세요.'
+                    message : '사용 불가능한 아이디입니다.'
                 });
-                return;
-            }
-            try{
-                const result = await authApi.checkIdDuplicate(userId);
-                if(result === 'NNNNY'){
 
-                }else{
-
-                }
             }
+        }catch(error){
+            setIdCheckResult({
+                valid : false,
+                message : '중복 확인에 실패했습니다.'
+            })
+        }
+    };
+    
+
+    //유효성 검사
+    const validate = () => {
+        const newErrors = {};
+
+        if(!formData.userId){
+            newErrors.userId = '아이디를 입력하세요';
+        }else if(formData.userId.length<5){
+            newErrors.userId = '아이디는 5글자 이상이어야 합니다.';
+        }
+        if(!formData.userPwd){
+            newErrors.userPwd = '비밀번호를 입력하세요';
+        }
+
+        if(!formData.userPwd !== formData.checkPwd){
+            newErrors.userPwd = '비밀번호가 일치하지 않습니다.';
+        }
+
+        if(!formData.userName){
+            newErrors.userPwd = '이름을 입력하세요.';
+        }
+
+        if(!idCheckResult?.valid){
+            newErrors.userId = '아이디 중복 확인을 해주세요.';
+        }
+
+        setErrors(newErrors);
+
+        //위에 오류가 발생하여 newError에 key가 담겨있을테니 객체가 비어있는지 판별하는 코드
+        //Object.keys == 객체의 키값들을 배열로 변환
+        return Object.keys(newErrors).length === 0; //true면 에러 없음, false면 에러
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if(!validate()) return; //위에 검사결과 false면 에러라서 리턴
+
+        setIsLoading(true);
+
+        try{
+            const {checkPwd,...submitData} = formData;
+            await authApi.register(submitData);
+            alert('회원가입이 완료되었습니다.');
+            navigate('/');
+        }catch(error){
+            alert(error.response ?.data?.message||'회원가입에 실패했습니다.');
+        }finally{
+            setIsLoading(false);
         }
     };
 
+    return (
+        <div className='container'>
+            <div className={styles.wrapper}>
+                <h2 className={styles.title}>회원가입</h2>
+
+                <form onSubmit={handleSubmit} className={styles.form}>
+                    <div className={styles.idField}>
+                        <Input
+                            label="ID"
+                            type="text"
+                            name="userId"
+                            value={formData.userId}
+                            onChange={handleChange}
+                            onBlur={handleIdCheck}
+                            placeholder="아이디를 입력하세요"
+                            error={errors.userId}
+                            required
+                            fullWidth
+                        />
+
+                        {
+                            idCheckResult && (
+                                <p className={`${styles.idCheckResult} ${idCheckResult.valid ? styles.valid : styles.invalid}`}>
+                                    {idCheckResult.message}
+                                </p>
+                            )
+                        }
+
+                        <Input
+                            label="Password"
+                            type="password"
+                            name="userPwd"
+                            value={formData.userPwd}
+                            onChange={handleChange}
+                            onBlur={handleIdCheck}
+                            palceholder="비밀번호를 입력하세요"
+                            error={errors.checkPwd}
+                            required
+                            fullWidth
+                        />
+
+                        <Input
+                            label="Password Check"
+                            type="password"
+                            name="checkPwd"
+                            value={formData.checkPwd}
+                            onChange={handleChange}
+                            onBlur={handleIdCheck}
+                            palceholder="비밀번호를 입력하세요"
+                            error={errors.checkPwd}
+                            required
+                            fullWidth
+                        />
+
+                        <Input
+                            label="Name"
+                            type="text"
+                            name="userName"
+                            value={formData.userName}
+                            onChange={handleChange}
+                            onBlur={handleIdCheck}
+                            palceholder="이름을 입력하세요"
+                            error={errors.userName}
+                            required
+                            fullWidth
+                        />
+
+                        <Input
+                            label="Email"
+                            type="email"
+                            name="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            onBlur={handleIdCheck}
+                            palceholder="이메일을 입력하세요"
+
+                            fullWidth
+                        />
+
+                        <Input
+                            label="Age"
+                            type="number"
+                            name="age"
+                            value={formData.age}
+                            onChange={handleChange}
+                            onBlur={handleIdCheck}
+                            palceholder="나이를 입력하세요"
+                            fullWidth
+                        />
+
+                        <Input
+                            label="Phone"
+                            type="tel"
+                            name="phone"
+                            value={formData.phone}
+                            onChange={handleChange}
+                            onBlur={handleIdCheck}
+                            palceholder="전화번호를 입력하세요"
+                            fullWidth
+                        />
+
+                        <Input
+                            label="Address"
+                            type="text"
+                            name="address"
+                            value={formData.address}
+                            onChange={handleChange}
+                            onBlur={handleIdCheck}
+                            palceholder="주소를 입력하세요"
+                            fullWidth
+                        />
+
+                        {/*성별 */}
+                        <div className={styles.genderField}>
+                            <label className={styles.label}>Gender</label>
+                            <div className={styles.radioGroup}>
+                                <label className={styles.radioLabel}>
+                                    <input type="radio"
+                                           name="gender"
+                                           value="M"
+                                           checked={formData.gender === 'M'}
+                                           onChange={handleChange}
+                                    />
+                                    남자
+                                </label>
+
+                                <label className={styles.radioLabel}>
+                                    <input type="radio"
+                                           name="gender"
+                                           value="F"
+                                           checked={formData.gender === 'F'}
+                                           onChange={handleChange}
+                                    />
+                                    여자
+                                </label>
+                            </div>
+                        </div>
+
+                        <div className={styles.buttons}>
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                loading={isLoading}
+                                disabled={!idCheckResult?.valid}
+                            >
+                                회원가입
+                            </Button>
+                            <Button type="reset" variant='danger'>
+                                초기화
+                            </Button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+
 }
+export default RegisterPage;

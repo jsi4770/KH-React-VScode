@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import styles from './Header.module.css';
 import {Link, useNavigate} from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import LoginModal from '../../features/auth/components/LoginModal';
+
 
 function Header () {
 
     //사용자 정보, 로그인 인증 상태값, 로그아웃 함수
-    const [user, isAuthenticated, logout] = useAuth();
+    const {user, isAuthenticated, logout} = useAuth();
 
     //모달 상태값
-    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
+    const {isLoginModalOpen, setIsLoginModalOpen} = useState(false);
 
     const navigate = useNavigate();
 
@@ -87,7 +90,7 @@ function Header () {
             </header>
 
             {/*로그인 모달 */}
-            <loginMoadal
+            <LoginModal
                 isOpen={isLoginModalOpen}
                 onClose={()=>setIsLoginModalOpen(false)}
             />

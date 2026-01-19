@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useState } from "react";
+import { createContext, useCallback, useContext, useState, useEffect } from "react";
 
 //인증 관련 컴포넌트
 const AuthContext = createContext(null);

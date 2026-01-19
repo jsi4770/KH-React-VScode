@@ -2,6 +2,7 @@ import { BrowserRouter } from "react-router-dom"
 import { AuthProvider } from "./context/AuthContext"
 import Layout from "./components/commons/Layout"
 import '@/styles/globals.css'
+import AppRouter from "./router/AppRouter";
 
 
 function App() {
@@ -10,7 +11,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Layout>
-          
+          <AppRouter></AppRouter>
         </Layout>
       </AuthProvider>
     </BrowserRouter>
