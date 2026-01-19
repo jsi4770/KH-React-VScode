@@ -9,7 +9,7 @@ function App() {
     <BrowserRouter>
       <AuthProvider>
         <Layout>
-          hello world
+          
         </Layout>
       </AuthProvider>
     </BrowserRouter>
