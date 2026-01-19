@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <style>
+        /* 전체 컨테이너 */
+        .search-panel {
+        max-width: 600px;
+        margin: 20px auto;
+        padding: 25px;
+        background-color: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        font-family: 'Pretendard', sans-serif;
+        }
+
+        /* 검색 그룹 스타일 */
+        .search-group {
+        margin-bottom: 20px;
+        }
+
+        /* 퀵 필터 컨테이너 */
+        .period-presets {
+        display: flex;
+        flex-wrap: wrap; /* 화면이 좁아지면 아래로 흐르게 */
+        gap: 8px;
+        margin-top: 10px;
+        }
+
+        /* 개별 항목 스타일 */
+        .preset-item {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+        background-color: #f0f4f8;
+        color: #555;
+        border-radius: 20px;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: all 0.2s;
+        display: flex;
+        align-items: center;
+        }
+
+        /* 실제 input(체크박스/라디오)은 숨기거나 작게 처리 */
+        .preset-item input {
+        margin-right: 5px;
+        cursor: pointer;
+        }
+
+        /* 마우스 호버 및 선택 시 효과 */
+        .preset-item:hover {
+        background-color: #e2e8f0;
+        }
+
+        /* 선택되었을 때 강조하고 싶다면 (JS와 연동 시 사용) */
+        .preset-item.active {
+        background-color: #4A90E2;
+        color: white;
+        font-weight: bold;
+        }
+
+        .group-title {
+        display: block;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: #333;
+        margin-bottom: 10px;
+        }
+
+        /* 입력 필드 공통 */
+        .input-field {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        font-size: 0.9rem;
+        outline: none;
+        transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+        border-color: #4A90E2;
+        }
+
+        .full-width {
+        width: 100%;
+        box-sizing: border-box;
+        }
+
+        /* 범위형 입력창 (날짜, 금액) */
+        .input-range {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        }
+
+        .input-range .input-field {
+        flex: 1;
+        }
+
+        .range-separator {
+        color: #888;
+        }
+
+        /* 카테고리 체크박스 그리드 */
+        .category-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        background: #f9f9f9;
+        padding: 12px;
+        border-radius: 8px;
+        }
+
+        .check-item {
+        font-size: 0.85rem;
+        color: #555;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        }
+
+        /* 버튼 영역 */
+        .search-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 30px;
+        }
+
+        .btn-submit, .btn-reset {
+        flex: 1;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: opacity 0.2s;
+        }
+
+        .btn-submit {
+        background-color: #4A90E2;
+        color: white;
+        }
+
+        .btn-reset {
+        background-color: #eee;
+        color: #666;
+        }
+
+        .btn-submit:hover, .btn-reset:hover {
+        opacity: 0.8;
+        }
+
+    </style>
+
+
+</head>
+<body>
+
+
+
+<div class="search-panel">
+  <form id="searchForm">
+    <div class="search-group">
+    <label class="group-title">📅 기간 검색</label>
+    <div class="input-range">
+        <input type="date" name="startDate" id="startDate" class="input-field">
+        <span class="range-separator">~</span>
+        <input type="date" name="endDate" id="endDate" class="input-field">
+    </div>
+    
+    <div class="period-presets">
+        <label class="preset-item"><input type="radio" name="preset" value="1w"> 1주일</label>
+        <label class="preset-item"><input type="radio" name="preset" value="1m"> 1개월</label>
+        <label class="preset-item"><input type="radio" name="preset" value="3m"> 3개월</label>
+        <label class="preset-item"><input type="radio" name="preset" value="6m"> 6개월</label>
+        <label class="preset-item"><input type="radio" name="preset" value="1y"> 1년</label>
+        <label class="preset-item"><input type="radio" name="preset" value="all"> 전체</label>
+    </div>
+    </div>
+
+    <div class="search-group">
+      <label class="group-title">📂 카테고리 (중복 선택)</label>
+      <div class="category-grid">
+        <label class="check-item"><input type="checkbox" name="category" value="food"> 식료품</label>
+        <label class="check-item"><input type="checkbox" name="category" value="health"> 주거·수도</label>
+        <label class="check-item"><input type="checkbox" name="category" value="health"> 보건</label>
+        <label class="check-item"><input type="checkbox" name="category" value="traffic"> 교통</label>
+        <label class="check-item"><input type="checkbox" name="category" value="culture"> 오락·문화</label>
+        <label class="check-item"><input type="checkbox" name="category" value="etc"> 기타</label>
+      </div>
+    </div>
+
+    <div class="search-group">
+      <label class="group-title">💰 금액 범위</label>
+      <div class="input-range">
+        <input type="number" name="minAmount" class="input-field" placeholder="최소 금액">
+        <span class="range-separator">~</span>
+        <input type="number" name="maxAmount" class="input-field" placeholder="최대 금액">
+      </div>
+    </div>
+
+    <div class="search-group">
+      <label class="group-title">📝 메모 키워드</label>
+      <input type="text" name="memo" class="input-field full-width" placeholder="검색할 메모 내용을 입력하세요">
+    </div>
+
+    <div class="search-actions">
+      <button type="reset" class="btn-reset">초기화</button>
+      <button type="submit" class="btn-submit">조회하기</button>
+    </div>
+  </form>
+</div>
+
+
+
+    
+</body>
+</html>
