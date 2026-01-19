@@ -55,7 +55,7 @@ function LoginModal({isOpen, onClose}) {
         
         //모달 위치
         <Modal isOpen={isOpen} onClose={handleClose} title='로그인'>
-            <form onSubmit={handleSubmit} className={StyleSheet.form}>
+            <form onSubmit={handleSubmit} className={styles.form}>
                 {/*input 요소들 위치 */}
                 <Input
                     label="ID"
@@ -78,8 +78,8 @@ function LoginModal({isOpen, onClose}) {
                     fullWidth
                 />
 
-                {error && <p className={StyleSheet.error}>{error}</p>}
-                <div className={StyleSheet.buttons}>
+                {error && <p className={styles.error}>{error}</p>}
+                <div className={styles.buttons}>
                     {/*버튼들 위치 */}
                     <Button type="submit" variant="primary" fullWidth loading={isLoading}>
                         로그인
