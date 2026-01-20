@@ -1,8 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { useState } from "react";
-import boardApi from "../../../api/boardApi"
+import { useEffect, useState } from "react";
+import boardApi from "../../api/boardApi"
 import Button from "../../components/commons/ui/Button";
+import replyApi from "../../api/replyApi";
 
 
 function BoardDetailPage(){
@@ -36,20 +37,55 @@ function BoardDetailPage(){
         fetchBoard();
     }, [boardNo, navigate]);
 
+    
+    //받아온 게시글 정보는 알맞는 위치에 출력하기
 
 
+    //댓글 목록 조회 (replyApi.js 만들어서 댓글 목록 조회해와 만들어둔 replies에 상태 처리하고 목록 뽑아보기)
+    const fetchReplies = useCallback(async()=> {
+        try{
+            const date = await replyApi.getList(boardNo);
 
+            console.log(data);
+
+            setReplies(data);
+
+        }catch(error){
+
+            console.error('댓글 조회 실패', error);
+
+        }
+
+    }, [boardNo]); //다른 게시글 정보로 처리될때 재생성
+
+    useEffect(()=> {
+        fetchReplies();
+    }, [fetchReplies]); //해당 호출함수가 갱신될때마다 (boardNo 변결되어 다른 게시글 조회시)
+
+    //게시글 수정
+
+
+    //게시글 삭제
+    
+
+    //댓글 등록
+
+
+    //목록으로
+    const handleGoList=()=>{
+        navigate("/board");
+    }
     if(isLoading){
-        return (
+        return(
             <div className="container">
                 <div className={styles.wrapper}>
-                    <p className={styles.loading}>
+                    <div className={styls.loading}>
                         로딩중...
-                    </p>
-
+                    </div>
                 </div>
+
             </div>
-        );
+        )
     }
 
     //작성자 확인
@@ -69,18 +105,25 @@ function BoardDetailPage(){
                     <tbody>
                         <tr>
                             <th>제목</th>
-                            <td colspan='3'></td>
+                            <td colspan='3'>{board.boardTitle}</td>
                         </tr>
                         <tr>
                             <th>작성자</th>
-                            <td></td>
+                            <td>{board.boardWriter}</td>
                             <th>작성일</th>
-                            <td></td>
+                            <td>{board.createDate}</td>
                         </tr>
                         <tr>
                             <th>첨부파일</th>
                             <td colspan='3'>
                                 {/*있으면 a태그, 없으면 첨부파일이 없습니다. */}
+                                {
+                                    board.originName ? (
+                                        <a href={board.changeName} className={styles.fileLink}>{board.originName}</a>
+                                    ) : (
+                                        '첨부파일이 없습니다.'
+                                    )
+                                }
 
                             </td>
                         </tr>
@@ -129,7 +172,7 @@ function BoardDetailPage(){
                                 />
                             )
                         }
-                        <Button variant="secondary" onClicj={} disabled={!isAuthenticated}>
+                        <Button variant="secondary" onClick={handleReplySubmit} disabled={!isAuthenticated}>
                             등록하기
                         </Button>
                     </div>
@@ -139,21 +182,22 @@ function BoardDetailPage(){
                     </div>
 
                     <div className={styles.replyList}>
-                        {/* 댓글 0개일때 */}
-                        {
-                            replies.lengtj === 0 ?(
-                                <p className={styles.noReply}>
-                                    등록된 댓글이 없습니다.
-                                </p>
-                            ) : (
-                                //댓글 목록
-                                <div key={} className={styles.replyItem}>
-                                    <span className={styles.replyWriter}></span>
-                                    <span className={styles.replyCotent}></span>
-                                    <span className={styles.replyDate}></span>
+                        {/* 1. length 오타 수정 및 데이터 존재 여부 확인 */}
+                        {replies && replies.length === 0 ? (
+                            <p className={styles.noReply}>
+                                등록된 댓글이 없습니다.
+                            </p>
+                        ) : (
+                            /* 2. map 함수를 사용하여 댓글 배열을 순회합니다. */
+                            replies && replies.map((reply) => (
+                                /* 3. key 속성에는 반드시 고유한 값(예: replyNo)을 넣어야 에러가 나지 않습니다. */
+                                <div key={reply.replyNo} className={styles.replyItem}>
+                                    <span className={styles.replyWriter}>{reply.replyWriter}</span>
+                                    <span className={styles.replyContent}>{reply.replyContent}</span>
+                                    <span className={styles.replyDate}>{reply.replyDate}</span>
                                 </div>
-                            )
-                        }
+                            ))
+                        )}
                     </div>
                 </div>
             </div>
