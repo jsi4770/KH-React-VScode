@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import boardApi from "../../api/boardApi"
 import Button from "../../components/commons/ui/Button";
 import replyApi from "../../api/replyApi";
+import styles from "./BoardDetailPage.module.css";
 
 
 function BoardDetailPage(){
@@ -44,7 +45,7 @@ function BoardDetailPage(){
     //댓글 목록 조회 (replyApi.js 만들어서 댓글 목록 조회해와 만들어둔 replies에 상태 처리하고 목록 뽑아보기)
     const fetchReplies = useCallback(async()=> {
         try{
-            const date = await replyApi.getList(boardNo);
+            const data = await replyApi.getList(boardNo);
 
             console.log(data);
 
@@ -64,11 +65,33 @@ function BoardDetailPage(){
 
     //게시글 수정
 
+    
+
 
     //게시글 삭제
     
 
     //댓글 등록
+    const handleReplySubmit = async () => {
+        if (!replyContent.trim()) {
+            alert("댓글 내용을 입력해주세요.");
+            return;
+        }
+
+        try {
+            // replyApi에 insert(등록) 요청을 보냅니다.
+            await replyApi.insert({
+                boardNo: boardNo,
+                replyContent: replyContent,
+                // 작성자 정보 등 추가 데이터
+            });
+
+            setReplyContent(""); // 입력창 초기화
+            fetchReplies();      // 댓글 목록 새로고침
+        } catch (error) {
+            console.error("댓글 등록 실패", error);
+        }
+    };
 
 
     //목록으로
@@ -79,7 +102,7 @@ function BoardDetailPage(){
         return(
             <div className="container">
                 <div className={styles.wrapper}>
-                    <div className={styls.loading}>
+                    <div className={styles.loading}>
                         로딩중...
                     </div>
                 </div>
@@ -101,11 +124,13 @@ function BoardDetailPage(){
                         목록으로
                     </Button>
                 </div>
+                <br/>
+
                 <table className={styles.table}>
                     <tbody>
                         <tr>
                             <th>제목</th>
-                            <td colspan='3'>{board.boardTitle}</td>
+                            <td colSpan='3'>{board.boardTitle}</td>
                         </tr>
                         <tr>
                             <th>작성자</th>
@@ -115,7 +140,7 @@ function BoardDetailPage(){
                         </tr>
                         <tr>
                             <th>첨부파일</th>
-                            <td colspan='3'>
+                            <td colSpan='3'>
                                 {/*있으면 a태그, 없으면 첨부파일이 없습니다. */}
                                 {
                                     board.originName ? (
@@ -129,10 +154,10 @@ function BoardDetailPage(){
                         </tr>
                         <tr>
                             <th>내용</th>
-                            <td colspan='3'></td>
+                            <td colSpan='3'></td>
                         </tr>
                         <tr>
-                            <td colspan='4' className={styles.content}>
+                            <td colSpan='4' className={styles.content}>
 
                             </td>
                         </tr>

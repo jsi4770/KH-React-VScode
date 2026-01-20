@@ -50,9 +50,9 @@ function BoardListPage(){
 
             setBoards(response.list || []); //목록이 조회되었다면 상태값 갱신, 아니라면 빈배열 처리
             setPageInfo({
-                currentPage : response.pi.currentPage || page,
-                totalPages : response.pi.maxPage || 1,
-                totalCount : response.pi.listCount || 0,
+                currentPage : response?.pi?.currentPage || page,
+                totalPages : response?.pi?.maxPage || 1,
+                totalCount : response?.pi?.listCount || 0,
             });
         } catch(error) {
             console.error('게시글 목록 조회 실패', error);
@@ -141,7 +141,7 @@ function BoardListPage(){
                                         <td className={styles.titleCall}>{board.boardTitle}</td>
                                         <td>{board.boardWriter}</td>
                                         <td>{board.count}</td>
-                                        <td>{board.crearteDate}</td>
+                                        <td>{board.createDate}</td>
                                         <td>{board.originName ? '📁' : ''}</td>
                                     </tr>
                                 ))
@@ -171,7 +171,7 @@ function BoardListPage(){
                         type="text"
                         value={searchKeyword}
                         onChange={(e) => setSearchKeyword(e.target.value)}
-                        placeholder="검색어를 입려하세요"
+                        placeholder="검색어를 입력하세요"
                         className={styles.input}
                     />
                     <Button type="submit" variant="secondary">
