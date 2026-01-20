@@ -19,6 +19,12 @@ export const boardApi = {
         const response = await api.get(`/board/detail/${boardNo}`);
 
         return response.data;
+    },
+
+    // boardApi 객체 내부에 추가
+    getTopList: async () => {
+        const response = await api.get('/board/topList');
+        return response.data;
     }
     
 }
