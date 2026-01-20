@@ -6,7 +6,7 @@ import api from "./axios";
 export const authApi = {
     //로그인
     login : async (credentials) => {
-        const response = await api.post('/', credentials);
+        const response = await api.post('/member/login', credentials);
         return response.data;
     },
     //로그아웃

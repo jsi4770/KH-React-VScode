@@ -3,6 +3,8 @@ import Modal from "@/components/commons/Modal"; //@는 src 기준 (절대경로)
 import { useAuth } from "../../../context/AuthContext";
 import Input from "../../../components/commons/ui/Input";
 import styles from "./LoginModal.module.css";
+import Button from "../../../components/commons/ui/Button"; 
+
 
 
 
@@ -37,7 +39,7 @@ function LoginModal({isOpen, onClose}) {
         setError('');
 
         //로그인 함수 받아온걸로 결과 처리
-        const result = await LoginModal(formData);
+        const result = await login(formData);
 
         if(result.success){
             onClose();
@@ -64,7 +66,7 @@ function LoginModal({isOpen, onClose}) {
                     label="ID"
                     type="text"
                     name="userId"
-                    value={formData}
+                    value={formData.userId}
                     onChange={handleChange}
                     placeholder = '아이디를 입력하세요'
                     required
@@ -74,7 +76,7 @@ function LoginModal({isOpen, onClose}) {
                     label="Password"
                     type="password"
                     name="userPwd"
-                    value={formData}
+                    value={formData.userPwd}
                     onChange={handleChange}
                     placeholder = '비밀번호를 입력하세요'
                     required

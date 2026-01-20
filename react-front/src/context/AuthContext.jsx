@@ -1,4 +1,5 @@
 import { createContext, useCallback, useContext, useState, useEffect } from "react";
+import authApi from "../api/authApi";
 
 //인증 관련 컴포넌트
 const AuthContext = createContext(null);

@@ -11,7 +11,7 @@ function Header () {
     const {user, isAuthenticated, logout} = useAuth();
 
     //모달 상태값
-    const {isLoginModalOpen, setIsLoginModalOpen} = useState(false);
+    const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
 
     const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ function Header () {
                             {isAuthenticated ? (
                                 <>
                                     <span className={styles.welcome}>
-                                        <Strong>{user?.userName}님 환영합니다</Strong>
+                                        <strong>{user?.userName}님 환영합니다</strong>
                                     </span>
 
                                     <Link to="/mypage" className={styles.link}>

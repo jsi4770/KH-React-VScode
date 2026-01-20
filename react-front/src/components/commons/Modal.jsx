@@ -30,7 +30,7 @@ function Modal({
 
     //이벤트 리스너 등록
     useEffect(()=>{
-        if(isPoen){
+        if(isOpen){
             document.addEventListener('keydown', handleKeyDown);
             document.body.style.overflow = 'hidden';
         }
@@ -44,8 +44,8 @@ function Modal({
     if(!isOpen) return null;
 
     return createPortal(
-        <div className={StyleSheet.overlay} onClick={handleoverlayClick}>
-            <div className={`${StyleSheet.modal} ${styles[size]}`} role='dialog' aia-modal='true'>
+        <div className={styles.overlay} onClick={handleoverlayClick}>
+            <div className={`${styles.modal} ${styles[size]}`} role='dialog' aia-modal='true'>
                 {/*헤더 */}
                 <div className={styles.header}>
                     <h2 className={styles.title}>${title}</h2>
@@ -61,7 +61,7 @@ function Modal({
                 </div>
 
                 {/*본문 */}
-                <div className={Styles.body}>{children}</div> 
+                <div className={styles.body}>{children}</div> 
             </div>
         </div>,
         document.body

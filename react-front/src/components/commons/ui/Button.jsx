@@ -1,4 +1,5 @@
-import styles from '/.Button.module.css';
+// Button.jsx 파일 상단
+import styles from '@/components/commons/ui/Button.module.css';
 
 //버튼 컴포넌트
 
@@ -18,7 +19,7 @@ function Button({
     const buttonClass = [
         styles.button,
         styles[variant],
-        style[size],
+        styles[size],
         fullWidth ? styles.fullWidth : '',
         loading ? styles.loading : '',
         className

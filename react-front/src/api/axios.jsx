@@ -4,7 +4,7 @@
 import axios from "axios";
 
 const api = axios.create({
-    baseURL : '',
+    baseURL : 'http://localhost:8080/spring',
     timeout : 10000,
     headers : {
         'Content-Type' : 'application/json'
@@ -12,7 +12,7 @@ const api = axios.create({
 });
 
 //Requset Interceptor - 토큰 자동 추가 (요청 인턱셉터)
-api.interceptor.request.use(
+api.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
         if(token){
@@ -26,7 +26,7 @@ api.interceptor.request.use(
 );
 
 //Response Interceptor - 에러 처리 및 토큰 만료 처리
-api.interceptors.response.use((
+api.interceptors.response.use(
     (response)=>{
         return response;
     },
@@ -56,6 +56,6 @@ api.interceptors.response.use((
         }
         return Promise.reject(error);
     } 
-));
+);
 
 export default api;
