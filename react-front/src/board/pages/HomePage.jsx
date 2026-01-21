@@ -37,12 +37,12 @@ function HomePage() {
     return (
         <div className="container">
             <div className={styles.wrapper}>
-                <h2 className={styles.title}>인기 게시글 (TOP 5)</h2>
+                <h2 className={styles.title}>TOP5 게시글</h2> <br/>
                 
                 <table className={styles.table}>
                     <thead>
                         <tr>
-                            <th>순위</th>
+                            <th>글번호</th>
                             <th>제목</th>
                             <th>작성자</th>
                             <th>조회수</th>
@@ -58,7 +58,7 @@ function HomePage() {
                                     onClick={() => handleBoardClick(board.boardNo)}
                                     className={styles.row}
                                 >
-                                    <td>{index + 1}</td>
+                                    <td>{board.boardNo}</td>
                                     <td className={styles.boardTitle}>{board.boardTitle}</td>
                                     <td>{board.boardWriter}</td>
                                     <td>{board.count}</td>

@@ -3,6 +3,7 @@ import BoardListPage from "../board/pages/BoardListPage";
 import MyPage from "../features/Pages/MyPage";
 import RegisterPage from "../features/Pages/RegisterPage";
 import {Route, Routes} from "react-router-dom";
+import HomePage from "../board/pages/HomePage";
 
 
 
@@ -11,7 +12,7 @@ function AppRouter() {
     return ( // 1. return 바로 옆에 소괄호를 시작해야 합니다!
         <Routes>
             {/* 메인 페이지가 비어있다면 홈 이동이 안 될 수 있으니 추가를 권장합니다 */}
-            <Route path="/" element={<div>홈 화면</div>} /> 
+            <Route path="/" element={<HomePage/>}/>
 
             {/* 인증 */}
             <Route path="/register" element={<RegisterPage />} />

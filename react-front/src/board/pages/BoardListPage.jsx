@@ -113,7 +113,7 @@ function BoardListPage(){
                             <th className={styles.colTitle}>제목</th>
                             <th className={styles.colWriter}>작성자</th>
                             <th className={styles.colCount}>조회수</th>
-                            <th className={styles.colDate}>작성자</th>
+                            <th className={styles.colDate}>작성일</th>
                             <th className={styles.colFile}>첨부파일</th>
                         </tr>
                     </thead>
