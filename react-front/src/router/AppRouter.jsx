@@ -4,6 +4,7 @@ import MyPage from "../features/Pages/MyPage";
 import RegisterPage from "../features/Pages/RegisterPage";
 import {Route, Routes} from "react-router-dom";
 import HomePage from "../board/pages/HomePage";
+import PrivateRouter from "./PrivateRouter";
 
 
 
@@ -13,10 +14,14 @@ function AppRouter() {
         <Routes>
             {/* 메인 페이지가 비어있다면 홈 이동이 안 될 수 있으니 추가를 권장합니다 */}
             <Route path="/" element={<HomePage/>}/>
+            <Route path="/login" element={<></>}></Route>
+            
 
             {/* 인증 */}
             <Route path="/register" element={<RegisterPage />} />
-            <Route path="/mypage" element={<MyPage />} />
+            <Route path="/mypage" element={<PrivateRouter>
+                                                <MyPage />
+                                           </PrivateRouter>} />
 
             {/* 자유게시판 */}
             <Route path="/board" element={<BoardListPage />} />

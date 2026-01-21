@@ -2,6 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import styles from './MyPage.module.css';
+import Input from "../../components/commons/ui/Input";
+import authApi from "../../api/authApi"; // 1. authApi 임포트 누락 추가
+import Button from "../../components/commons/ui/Button"; // 2. Button 임포트 누락 추가
+import Modal from "../../components/commons/Modal";
+
 
 
 function MyPage(){
@@ -44,7 +49,7 @@ function MyPage(){
                 alert('정보가 수정되었습니다.');
 
             }catch(error){
-                alert(error.response?.data?.mesage || '정보수정에 실패했습니다.');
+                alert(error.response?.data?.message || '정보수정에 실패했습니다.');
 
             }finally{
                 setIsLoading(false);
@@ -68,6 +73,25 @@ function MyPage(){
                 navigate('/');
             }catch(error){
                 alert(error.response?.data?.message||'회원 탈퇴에 실패했습니다.');
+            }
+        };
+
+        const handleIdCheck = async () => {
+            // 마이페이지는 이미 가입된 정보를 수정하는 곳이므로 
+            // 보통 아이디 중복체크를 하지 않거나, 아이디 필드가 readOnly입니다.
+            // 만약 중복체크가 필요하다면 아래와 같이 작성합니다.
+            
+            if (!formData.userId) return;
+
+            try {
+                const isAvailable = await authApi.checkIdDuplicate(formData.userId);
+                if (isAvailable) {
+                    console.log("사용 가능한 아이디입니다.");
+                } else {
+                    alert("이미 사용 중인 아이디입니다.");
+                }
+            } catch (error) {
+                console.error("중복 체크 실패:", error);
             }
         };
 
@@ -201,10 +225,10 @@ function MyPage(){
                             <input
                                 label="Password"
                                 type="password"
-                                value={deletePasssword}
+                                value={deletePassword}
                                 onChange={(e)=>setDeletePassword(e.target.value)}
                                 placeholder="비밀번호를 입력하세요"
-                                fullWidth
+                                
                             />
 
                             <Button variant="danger" fullWidth onClick={handleDelete}>

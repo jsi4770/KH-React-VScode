@@ -19,6 +19,12 @@
   gap: var(--spacing-md);
 }
 
+.form input { 
+  border: 1px solid var(--color-border);
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+}
+
 .genderField {
   display: flex;
   flex-direction: column;

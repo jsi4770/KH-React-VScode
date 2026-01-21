@@ -5,6 +5,7 @@ import boardApi from "../../api/boardApi"
 import Button from "../../components/commons/ui/Button";
 import replyApi from "../../api/replyApi";
 import styles from "./BoardDetailPage.module.css";
+import Textarea from "../../components/commons/ui/Textarea";
 
 
 function BoardDetailPage(){
@@ -180,24 +181,34 @@ function BoardDetailPage(){
 
                 {/*댓글 영역 */}
                 <div className={styles.repleSection}>
-                    <div className={styles.replyForm}>
-                        {
-                            isAuthenticated ? (
-                                <textarea
-                                    //value={}
-                                    //onChange={}
-                                    placeholder="댓글을 입력하세요"
-                                    className={styles.reply}    
+                    <div className={styles.commentInputContainer}>
+                        <div className={styles.replyWrapper}>
+                            {isAuthenticated ? (
+                                <Textarea
+                                    value={replyContent}
+                                    onChange={(e) => setReplyContent(e.target.value)}
+                                    placeholder="따뜻한 댓글을 남겨주세요."
+                                    fullWidth // 가로 너비 100% 확보
                                 />
                             ) : (
-                                <textarea
+                                <Textarea
                                     placeholder="로그인 후 이용 가능합니다."
-                                    className={styles.replyInput}
                                     readOnly
+                                    fullWidth
                                 />
-                            )
-                        }
-                        <Button variant="secondary" onClick={handleReplySubmit} disabled={!isAuthenticated}>
+                            )}
+                        </div>
+                        
+                        <Button 
+                            variant="secondary" 
+                            className={styles.submitButton}
+                            onClick={() => {
+                                
+                                handleReplySubmit(replyContent); // 작성한 내용 전달
+                                setReplyContent(''); // 제출 후 초기화
+                            }} 
+                            disabled={!isAuthenticated || !replyContent.trim()}
+                        >
                             등록하기
                         </Button>
                     </div>

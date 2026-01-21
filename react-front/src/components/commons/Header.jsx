@@ -53,7 +53,7 @@ function Header () {
                                 </>
                             ) : (
                                 <>
-                                    <Link to="/resister" className={styles.link}>
+                                    <Link to="/register" className={styles.link}>
                                         회원가입
                                     </Link>
 

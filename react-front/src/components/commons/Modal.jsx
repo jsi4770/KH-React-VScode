@@ -48,7 +48,7 @@ function Modal({
             <div className={`${styles.modal} ${styles[size]}`} role='dialog' aia-modal='true'>
                 {/*헤더 */}
                 <div className={styles.header}>
-                    <h2 className={styles.title}>${title}</h2>
+                    <h2 className={styles.title}>{title}</h2>
                     {showCloseButton && (
                         <button type="button"
                                 className={styles.closeButton}

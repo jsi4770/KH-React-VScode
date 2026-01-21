@@ -37,7 +37,7 @@ api.interceptors.response.use(
                 case 401 : //토큰 만료
                     localStorage.removeItem('token');
                     localStorage.removeItem('user');
-                    window.location.href = '/login';
+                    //window.location.href = '/login';
                 break;
                 case 403 : //권한 불충분
                     console.log('접근 권한이 없습니다.');

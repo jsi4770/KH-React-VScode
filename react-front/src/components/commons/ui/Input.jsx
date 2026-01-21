@@ -20,7 +20,7 @@ const Input = forwardRef(function Input(
         error ? styles.error : '',
         fullWidth ? styles.fullWidth : '',
         className,
-    ].filter(Boolean).join('');
+    ].filter(Boolean).join(' ');
 
     return (
         <div className={`${styles.wrapper} ${fullWidth?styles.fullWidth : ''}`}>
